@@ -45,6 +45,19 @@ class FoundationViteTest extends TestCase
         );
     }
 
+    public function testViteWithCssHasQuery()
+    {
+        $this->makeViteManifest();
+
+        $result = app(Vite::class)(['resources/css/app-with-query.css']);
+
+        $this->assertStringEndsWith(
+            '<link rel="preload" as="style" href="https://example.com/build/assets/app-with-query.versioned.css?query" />'
+            .'<link rel="stylesheet" href="https://example.com/build/assets/app-with-query.versioned.css?query" />',
+            $result->toHtml()
+        );
+    }
+
     public function testViteWithCssImport()
     {
         $this->makeViteManifest();
@@ -355,6 +368,10 @@ class FoundationViteTest extends TestCase
                     'src' => 'resources/css/app.css',
                     'file' => 'assets/app.versioned.css',
                 ],
+                'resources/css/app-with-query.css' => [
+                    'src' => 'resources/css/app-with-query.css',
+                    'file' => 'assets/app-with-query.versioned.css?query',
+                ],
                 '_someFile.js' => [
                     'file' => 'assets/someFile.versioned.js',
                     'css' => [
@@ -425,6 +442,10 @@ class FoundationViteTest extends TestCase
                 'resources/css/app.css' => [
                     'src' => 'resources/css/app.css',
                     'file' => 'assets/app.versioned.css',
+                ],
+                'resources/css/app-with-query.css' => [
+                    'src' => 'resources/css/app-with-query.css',
+                    'file' => 'assets/app-with-query.versioned.css?query',
                 ],
                 '_someFile.js' => [
                     'file' => 'assets/someFile.versioned.js',
@@ -1016,6 +1037,10 @@ class FoundationViteTest extends TestCase
             'resources/css/app.css' => [
                 'src' => 'resources/css/app.css',
                 'file' => 'assets/app.versioned.css',
+            ],
+            'resources/css/app-with-query.css' => [
+                'src' => 'resources/css/app-with-query.css',
+                'file' => 'assets/app-with-query.versioned.css?query',
             ],
             '_someFile.js' => [
                 'file' => 'assets/someFile.versioned.js',
